@@ -2,57 +2,47 @@ import React, { useState } from "react";
 
 const Parent = () => {
     const [todos, setTodos] = useState([
-        {
-            id: 1,
-            title: "Learn React",
-        },
-        {
-            id: 2,
-            title: "Build React App",
-        },
-        {
-            id: 3,
-            title: "Deploy React App",
-        },
+        { "title": "Learn React" },
+        { "title": "Build a React App" },
+        { "title": "Deploy the React app" },
     ]);
 
-    const handleCompleteTodo = (todoId) => {
-        setTodos((prevTodos) =>
-            prevTodos.map((todo) => {
-                if (todo.id === todoId) {
-                    return { ...todo, completed: true };
-                }
-                return todo;
-            })
-        );
+    const handleCompleteTodo = (index) => {
+        const updatedTodos = todos.map((todo, i) => {
+            if (i === index) {
+                return {
+                    ...todo,
+                    completed: true,
+                };
+            }
+            return todo;
+        });
+
+        setTodos(updatedTodos);
     };
 
     return (
-        <div className="parent">
-            <h1>Parent Component</h1>
-            <Child todos={todos} handleCompleteTodo={handleCompleteTodo} />
+        <div id="main">
+            <h1>Parent component</h1>
+            <ChildComponent todos={todos} handleCompleteTodo={handleCompleteTodo} />
         </div>
     );
-};
+}
 
-const Child = ({ todos, handleCompleteTodo }) => {
+const ChildComponent = ({ todos, handleCompleteTodo }) => {
     return (
-        <div className="child">
+        <div id="child">
             <h2>Child Component</h2>
-            {todos.map((todo) => (
-                <div key={todo.id} className="todo">
-                    <ul>
-                        <li>
-                            <span>{todo.title}</span>
-                            {!todo.completed && (
-                                <button onClick={() => handleCompleteTodo(todo.id)}>
-                                    Complete
-                                </button>
-                            )}
-                        </li>
-                    </ul>
-                </div>
-            ))}
+            {
+                todos.map((todo, index) => (
+                    <li key={index}>
+                        {todo.title}
+                        {!todo.completed && (
+                            <button onClick={() => handleCompleteTodo(index)}>Complete</button>
+                        )}
+                    </li>
+                ))
+            }
         </div>
     );
 };
